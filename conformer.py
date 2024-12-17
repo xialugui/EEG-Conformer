@@ -64,13 +64,13 @@ cudnn.deterministic = True
 
 
 # Convolution module
-# use conv to capture local features, instead of postion embedding.
+# use conv to capture local features, instead of position embedding.
 class PatchEmbedding(nn.Module):
     def __init__(self, emb_size=40):
         # self.patch_size = patch_size
         super().__init__()
 
-        self.shallownet = nn.Sequential(
+        self.shallow_net = nn.Sequential(
             nn.Conv2d(1, 40, (1, 25), (1, 1)),
             nn.Conv2d(40, 40, (22, 1), (1, 1)),
             nn.BatchNorm2d(40),
@@ -87,7 +87,7 @@ class PatchEmbedding(nn.Module):
 
     def forward(self, x: Tensor) -> Tensor:
         b, _, _, _ = x.shape
-        x = self.shallownet(x)
+        x = self.shallow_net(x)
         x = self.projection(x)
         return x
 
@@ -224,7 +224,7 @@ class ExP():
         self.nSub = nsub
 
         self.start_epoch = 0
-        self.root = '/Data/strict_TE/'
+        self.root = './Data/strict_TE/'
 
         self.log_write = open("./results/log_subject%d.txt" % self.nSub, "w")
 
